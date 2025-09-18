@@ -105,7 +105,7 @@ Run with defaults (searches for `error` case-insensitive):
 -o OUTFILE   Output file to write matches (default: "errors_found.log")
 -c N         Context lines before/after each match (default: 0)
 -S           Case-sensitive (default is case-insensitive)
--h           Show help
+-h           Show help.
 
 ### Examples
 

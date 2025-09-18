@@ -7,7 +7,7 @@
 #   -o OUTFILE   Where to write matching output (default: "errors_found.log")
 #   -c N         Context lines before/after matches (default: 0)
 #   -S           Case-sensitive (default is case-insensitive)
-#   -h           Show help
+#   -h           Show help.
 #
 # Exit codes:
 #   0 = at least one matching line found
