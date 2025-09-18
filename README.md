@@ -2,12 +2,13 @@
 
 This repo currently documents the following:
 
-**`backup.sh`**, a small Bash utility to back up a directory safely.
-**`log_parser.sh`**, a small Bash utility to search log files for a regex pattern, with options for case sensitivity, context lines, and output redirection.
+**`backup.sh`**, a small Bash utility to back up a directory safely. 
+**`log_parser.sh`**, a small Bash utility to search log files for a regex pattern, with options for case sensitivity, context lines, and output redirection. 
+**`sys_report.sh`**, a small Bash utility to generate a system information report, including CPU, memory, disk, and network details.
 
 ---
 
-## 🧰 Script: backup.sh
+## 🧰 Script: `backup.sh`
 
 Copies the contents of a source directory into a timestamped folder
 "$src"_backup_YYYY-MM-DD_HHMMSS/, preserving permissions, timestamps,
@@ -21,7 +22,7 @@ symlinks, and dotfiles.
 
 ---
 
-## 🚀 Usage: backup.sh
+## 🚀 Usage: `backup.sh`
 
 Make the script executable (one time):
 
@@ -41,18 +42,13 @@ Back up a folder into a timestamped directory (default parent: current dir):
 
 ### Quick test
 
-# Set up a tiny test tree
 mkdir -p tests && printf "hello\n" > tests/backup_tests.txt
-
-# Run the backup
 ./backup.sh tests
-
-# Verify contents match
 diff -qr tests tests_backup_*    # expect no differences
 
 ---
 
-## 🔒 Safety Notes: backup.sh
+## 🔒 Safety Notes: `backup.sh`
 
 - `backup.sh` only copies; it never deletes or modifies the source.
 - Paths are quoted and separated from options with `--` to avoid issues with spaces or dash-prefixed names.
@@ -63,16 +59,16 @@ diff -qr tests tests_backup_*    # expect no differences
 ## ⚙️ Requirements
 
 - Bash 4+
-- coreutils (cp, mkdir, grep, wc) — installed by default on Ubuntu/WSL.
+- coreutils (cp, mkdir, grep, wc, df, free, ps, ip) — installed by default on Ubuntu/WSL.
 
 On minimal systems/containers, you can install core tools with:
 
 sudo apt update
-sudo apt install -y coreutils
+sudo apt install -y coreutils procps iproute2
 
 ---
 
-## 🧰 Script: log_parser.sh
+## 🧰 Script: `log_parser.sh`
 
 Searches a log file for a given regex pattern and writes the matches to an output file.
 Provides options for case sensitivity, context lines, and summary reporting.
@@ -89,7 +85,7 @@ Exits 0 if matches are found, 1 if not, and 2 for usage errors.
 
 ---
 
-## 🚀 Usage: log_parser.sh
+## 🚀 Usage: `log_parser.sh`
 
 Make the script executable (one time):
 
@@ -101,11 +97,11 @@ Run with defaults (searches for `error` case-insensitive):
 
 ### Options
 
--p PATTERN   Regex to search for (default: "error")
--o OUTFILE   Output file to write matches (default: "errors_found.log")
--c N         Context lines before/after each match (default: 0)
+-p PATTERN   Regex to search for (default: "error") 
+-o OUTFILE   Output file to write matches (default: "errors_found.log") 
+-c N         Context lines before/after each match (default: 0) 
 -S           Case-sensitive (default is case-insensitive)
--h           Show help.
+-h           Show help
 
 ### Examples
 
@@ -119,10 +115,36 @@ cat found.log
 
 matches=2  written_lines=4  pattern=error  out=errors_found.log  file=/tmp/app.log
 
-- matches → number of matching lines (ignores context)
+- matches → number of matching lines (ignores context) 
 - written_lines → total lines written (includes context if `-c` is used)
-- pattern → regex searched
+- pattern → regex searched 
 - out → output file path
 - file → input file scanned
 
 ---
+
+## 🧰 Script: `sys_report.sh`
+
+Generates a system information report with details about the OS, CPU, memory, disk usage, top processes, and network configuration.
+
+### Key behavior
+
+- Prints OS and kernel version (`uname -a`).
+- Shows uptime and system load averages (`uptime`).
+- Displays CPU details (via `lscpu`).
+- Reports memory usage (`free -h`).
+- Shows disk usage for root filesystem (`df -h /`).
+- Lists the top 5 CPU-consuming processes (`ps -eo ...`).
+- Prints IPv4 addresses assigned to the system (`ip -4 addr show`).
+
+---
+
+## 🚀 Usage: `sys_report.sh`
+
+Make the script executable (one time):
+
+chmod +x sys_report.sh
+
+Run it:
+
+./sys_report.sh
